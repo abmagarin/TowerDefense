@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class SelectionBehaviour : MonoBehaviour
 {
-    private GameObject selected = null;
-
+    public GameObject selected = null;
+    private Canvas canvas;
     void Start()
     {
         GetComponent<Renderer>().enabled = false;
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        canvasShown(false);
     }
 
 
@@ -33,5 +35,24 @@ public class SelectionBehaviour : MonoBehaviour
             Debug.Log("Objeto clicado: " + hit.transform.name);
         }
 
+        if (selected != null && selected.tag == "TowerSpot")
+        {
+            canvasShown(true);
+        }
+        else
+        {
+            canvasShown(false);
+        }
+        if (selected == null)
+        {
+            GetComponent<Renderer>().enabled = false;
+            canvasShown(false);
+        }
+
+    }
+
+    public void canvasShown(bool state)
+    {
+        canvas.gameObject.SetActive(state);
     }
 }
