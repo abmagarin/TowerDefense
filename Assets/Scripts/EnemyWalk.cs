@@ -5,7 +5,11 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] waypoints;
     public float speed = 2f;
     private int currentWaypointIndex = 0;
+    void Start()
+    {
+        Awake();
 
+    }
     void Update()
     {
         if (currentWaypointIndex >= waypoints.Length) return;
@@ -22,6 +26,18 @@ public class EnemyMovement : MonoBehaviour
         if (Vector3.Distance(currentPos, targetXZ) < 0.1f)
         {
             currentWaypointIndex++;
+        }
+    }
+
+    void Awake()
+    {
+        Transform holder = GameObject.Find("waypoints").transform;
+        int count = holder.childCount;
+        waypoints = new Transform[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            waypoints[i] = holder.GetChild(i);
         }
     }
 }
