@@ -14,14 +14,14 @@ public class EnemyWalk : MonoBehaviour
     private Rigidbody rb;
     private float baseY;
     private float randomOffset;
-
+    public int life = 100;
 
     void Awake()
     {
 
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        rb.isKinematic = false;
+        rb.isKinematic = true;
 
         randomOffset = Random.Range(0f, 2f * Mathf.PI);
     }
@@ -29,7 +29,15 @@ public class EnemyWalk : MonoBehaviour
     void Start()
     {
         baseY = transform.position.y;
+        GameObject[] arrow = GameObject.FindGameObjectsWithTag("Arrow");
+    }
 
+    void Update()
+    {
+        if (life <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void SetWaypoints(Transform newWaypoints)
@@ -66,5 +74,11 @@ public class EnemyWalk : MonoBehaviour
         {
             currentWaypointIndex++;
         }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Arrow")) life -= 10;
+        if (other.CompareTag("Bullet")) life -= 5;
+        if (other.CompareTag("CannonBall")) life -= 20;
     }
 }
