@@ -1,43 +1,70 @@
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class EnemyWalk : MonoBehaviour
 {
     public Transform[] waypoints;
     public float speed = 2f;
+
+    [Header("Hover Settings")]
+    public float hoverHeight = 0.5f;
+    public float hoverSpeed = 2f;
+
     private int currentWaypointIndex = 0;
+    private Rigidbody rb;
+    private float baseY;
+    private float randomOffset;
+
+
+    void Awake()
+    {
+
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.isKinematic = false;
+
+        randomOffset = Random.Range(0f, 2f * Mathf.PI);
+    }
+
     void Start()
     {
-        Awake();
+        baseY = transform.position.y;
 
     }
-    void Update()
+
+    public void SetWaypoints(Transform newWaypoints)
+    {
+        int waypointNumber = newWaypoints.childCount;
+        waypoints = new Transform[waypointNumber];
+
+        for (int i = 0; i < waypointNumber; i++)
+        {
+            waypoints[i] = newWaypoints.GetChild(i);
+        }
+    }
+
+    void FixedUpdate()
     {
         if (currentWaypointIndex >= waypoints.Length) return;
 
-        Vector3 target = waypoints[currentWaypointIndex].position;
-
-        // Solo movemos hacia XZ, pero respetamos la Y actual del enemigo
         Vector3 currentPos = transform.position;
+        Vector3 target = waypoints[currentWaypointIndex].position;
         Vector3 targetXZ = new Vector3(target.x, currentPos.y, target.z);
         Vector3 direction = (targetXZ - currentPos).normalized;
 
-        transform.position += direction * speed * Time.deltaTime;
+        // Movimiento lineal
+        Vector3 nextXZ = currentPos + direction * speed * Time.deltaTime;
+
+        // Movimiento vertical tipo hover
+        float hoverY = baseY + Mathf.Sin(Time.time * hoverSpeed + randomOffset) * hoverHeight;
+
+        // Combinamos XZ + hover
+        Vector3 finalPosition = new Vector3(nextXZ.x, hoverY, nextXZ.z);
+        rb.MovePosition(finalPosition);
 
         if (Vector3.Distance(currentPos, targetXZ) < 0.1f)
         {
             currentWaypointIndex++;
-        }
-    }
-
-    void Awake()
-    {
-        Transform holder = GameObject.Find("waypoints").transform;
-        int count = holder.childCount;
-        waypoints = new Transform[count];
-
-        for (int i = 0; i < count; i++)
-        {
-            waypoints[i] = holder.GetChild(i);
         }
     }
 }

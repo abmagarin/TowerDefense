@@ -96,6 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1099247462695829585}
   - component: {fileID: -420681341609429159}
+  - component: {fileID: 6872152250157172467}
   m_Layer: 0
   m_Name: ballistaTower
   m_TagString: Untagged
@@ -141,6 +142,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.88854456, z: 1}
   m_Center: {x: 0, y: 0.5791509, z: 0}
+--- !u!114 &6872152250157172467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871253298882032099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e4ad862ea3be37bcd688c56d23f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyTag: Enemy
+  range: 1.7
+  weaponPivot: {fileID: 0}
+  ammo: {fileID: 2053728063205933433, guid: 1522f5fa705c0d5d29ed483bc8597977, type: 3}
 --- !u!1 &6058531148415906081
 GameObject:
   m_ObjectHideFlags: 0

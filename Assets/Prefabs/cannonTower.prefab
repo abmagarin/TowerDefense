@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 201633356381473283}
   - component: {fileID: -1710718958333673202}
+  - component: {fileID: -3291189283452327164}
   m_Layer: 0
   m_Name: cannonTower
   m_TagString: Untagged
@@ -55,6 +56,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1297216, y: 0.7654178, z: 1.014888}
   m_Center: {x: 0.004716754, y: 0.5469773, z: 0.007444203}
+--- !u!114 &-3291189283452327164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6622344164671885401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e4ad862ea3be37bcd688c56d23f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyTag: Enemy
+  range: 10
+  weaponPivot: {fileID: 0}
+  ammo: {fileID: 3635994379143137532, guid: 8133ac91c35ebd24b91f44b2890166df, type: 3}
 --- !u!1001 &4169973881629547983
 PrefabInstance:
   m_ObjectHideFlags: 0
