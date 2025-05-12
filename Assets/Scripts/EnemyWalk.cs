@@ -38,6 +38,7 @@ public class EnemyWalk : MonoBehaviour
     {
         if (life <= 0)
         {
+            GameManager.Instance.AddCoins(5);
             Destroy(gameObject);
         }
     }

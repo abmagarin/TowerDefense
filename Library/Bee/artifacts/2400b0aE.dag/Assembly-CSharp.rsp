@@ -400,6 +400,7 @@
 "Assets/Scripts/DestroyAmmo.cs"
 "Assets/Scripts/EnemyWalk.cs"
 "Assets/Scripts/FlagWaver.cs"
+"Assets/Scripts/GameManager.cs"
 "Assets/Scripts/Hover.cs"
 "Assets/Scripts/SelectionBehaviour.cs"
 "Assets/Scripts/TowerTargeting.cs"
