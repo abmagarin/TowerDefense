@@ -14,7 +14,9 @@ public class EnemyWalk : MonoBehaviour
     private Rigidbody rb;
     private float baseY;
     private float randomOffset;
-    public int life = 100;
+    public float life = 100;
+    public float maxLife = 100;
+
 
     void Awake()
     {

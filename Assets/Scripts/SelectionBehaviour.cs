@@ -1,30 +1,38 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectionBehaviour : MonoBehaviour
 {
     public GameObject selected = null;
     private Canvas canvas;
+    public GameObject turretButton;
+    public GameObject cannonButton;
+    public GameObject ballistaButton;
+    public GameObject enemyInfo;
+    public Slider slider;
+
+    private EnemyWalk currentEnemy = null;
+
     void Start()
     {
         GetComponent<Renderer>().enabled = false;
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        canvasShown(false);
+        lifeInterfaceShown(false);
+        towerInterfaceShown(false);
     }
 
-
-    // Update is called once per frame
     void Update()
     {
+        // Detect click
         if (Input.GetMouseButtonDown(0) &&
             Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
         {
             GameObject clicked = hit.transform.gameObject;
+
             if (clicked != selected)
             {
                 selected = clicked;
                 GetComponent<Renderer>().enabled = true;
-                // Mueve el objeto con este script a la posición del objeto clicado
-                transform.position = new Vector3(hit.transform.position.x, 0.3f, hit.transform.position.z);
             }
             else
             {
@@ -35,24 +43,52 @@ public class SelectionBehaviour : MonoBehaviour
             Debug.Log("Objeto clicado: " + hit.transform.name);
         }
 
-        if (selected != null && selected.tag == "TowerSpot")
+        if (selected != null)
         {
-            canvasShown(true);
+            transform.position = new Vector3(selected.transform.position.x, 0.3f, selected.transform.position.z);
+
+            if (selected.CompareTag("TowerSpot"))
+            {
+                towerInterfaceShown(true);
+                lifeInterfaceShown(false);
+                currentEnemy = null; // Limpiar referencia
+            }
+            else if (selected.CompareTag("Enemy"))
+            {
+                if (currentEnemy == null || currentEnemy.gameObject != selected)
+                {
+                    currentEnemy = selected.GetComponent<EnemyWalk>();
+                    slider.maxValue = currentEnemy.maxLife; // Solo si tienes maxLife
+                }
+
+                slider.value = currentEnemy.life;
+                lifeInterfaceShown(true);
+                towerInterfaceShown(false);
+            }
+            else
+            {
+                towerInterfaceShown(false);
+                lifeInterfaceShown(false);
+                currentEnemy = null;
+            }
         }
         else
         {
-            canvasShown(false);
+            towerInterfaceShown(false);
+            lifeInterfaceShown(false);
+            currentEnemy = null;
         }
-        if (selected == null)
-        {
-            GetComponent<Renderer>().enabled = false;
-            canvasShown(false);
-        }
-
     }
 
-    public void canvasShown(bool state)
+    public void towerInterfaceShown(bool state)
     {
-        canvas.gameObject.SetActive(state);
+        turretButton.SetActive(state);
+        cannonButton.SetActive(state);
+        ballistaButton.SetActive(state);
+    }
+
+    public void lifeInterfaceShown(bool state)
+    {
+        enemyInfo.SetActive(state);
     }
 }
