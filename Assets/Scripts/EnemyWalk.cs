@@ -80,13 +80,21 @@ public class EnemyWalk : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Arrow")) life -= 10;
-        if (other.CompareTag("Bullet")) life -= 5;
-        if (other.CompareTag("CannonBall")) life -= 20;
+        if (other.CompareTag("Arrow")) life -= 8;
+        if (other.CompareTag("Bullet")) life -= 3;
+        if (other.CompareTag("CannonBall")) life -= 18;
         if (other.CompareTag("finish"))
         {
+            if (gameObject.name.StartsWith("ufo 3"))
+            {
+                GameManager.Instance.AddLives(-3);
+            }
+            else
+            {
+                GameManager.Instance.AddLives(-1);
+            }
+
             Destroy(gameObject);
-            GameManager.Instance.AddLives(-1);
         }
     }
 }

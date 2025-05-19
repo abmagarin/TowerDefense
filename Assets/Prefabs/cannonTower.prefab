@@ -69,9 +69,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTag: Enemy
-  range: 10
+  range: 2
   weaponPivot: {fileID: 0}
   ammo: {fileID: 3635994379143137532, guid: 8133ac91c35ebd24b91f44b2890166df, type: 3}
+  ammoSpam: 1.2
 --- !u!1001 &4169973881629547983
 PrefabInstance:
   m_ObjectHideFlags: 0

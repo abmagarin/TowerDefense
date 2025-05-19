@@ -19,20 +19,14 @@ public class TowerTargeting : MonoBehaviour
             if (gameObject.name.Contains("ballistaTower"))
             {
                 weaponPivot = transform.Find("weapon-ballista");
-                range = 2.2f;
-                ammoSpam = 1f;
             }
             else if (gameObject.name.Contains("cannonTower"))
             {
                 weaponPivot = transform.Find("weapon-cannon");
-                range = 1.7f;
-                ammoSpam = 1f;
             }
             else if (gameObject.name.Contains("turretTower"))
             {
                 weaponPivot = transform.Find("weapon-turret");
-                range = 1.7f;
-                ammoSpam = 0.3f;
             }
 
             if (weaponPivot == null)
@@ -64,15 +58,31 @@ public class TowerTargeting : MonoBehaviour
 
     void FindTarget()
     {
+        // Si ya hay un objetivo y sigue vivo y dentro del rango, no lo cambia
+        if (target != null)
+        {
+            float distance = Vector3.Distance(transform.position, target.position);
+            if (distance <= range)
+            {
+                return;
+            }
+            else
+            {
+                target = null; // Salió de rango
+            }
+        }
+
+        // Buscar un nuevo enemigo más cercano dentro del rango
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         float closestDistance = Mathf.Infinity;
         Transform closestEnemy = null;
 
         foreach (GameObject enemy in enemies)
         {
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (enemy == null) continue; // Por si algún enemigo ha sido destruido
 
-            if (distance < range && distance < closestDistance)
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance <= range && distance < closestDistance)
             {
                 closestDistance = distance;
                 closestEnemy = enemy.transform;
@@ -82,11 +92,6 @@ public class TowerTargeting : MonoBehaviour
         target = closestEnemy;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, range);
-    }
     void Shoot()
     {
         if (!Application.isPlaying) return;
