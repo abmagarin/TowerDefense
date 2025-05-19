@@ -9,6 +9,8 @@ TagManager:
   - Arrow
   - Bullet
   - CannonBall
+  - finish
+  - Windmill
   layers:
   - Default
   - TransparentFX

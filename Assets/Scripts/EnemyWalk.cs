@@ -83,5 +83,10 @@ public class EnemyWalk : MonoBehaviour
         if (other.CompareTag("Arrow")) life -= 10;
         if (other.CompareTag("Bullet")) life -= 5;
         if (other.CompareTag("CannonBall")) life -= 20;
+        if (other.CompareTag("finish"))
+        {
+            Destroy(gameObject);
+            GameManager.Instance.AddLives(-1);
+        }
     }
 }
