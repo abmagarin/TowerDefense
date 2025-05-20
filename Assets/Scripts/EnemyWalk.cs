@@ -4,9 +4,9 @@ using UnityEngine;
 public class EnemyWalk : MonoBehaviour
 {
     public Transform[] waypoints;
+    private float baseSpeed;
     public float speed = 2f;
 
-    [Header("Hover Settings")]
     public float hoverHeight = 0.5f;
     public float hoverSpeed = 2f;
 
@@ -24,6 +24,8 @@ public class EnemyWalk : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.isKinematic = true;
+
+        baseSpeed = speed;
 
         randomOffset = Random.Range(0f, 2f * Mathf.PI);
     }
@@ -97,4 +99,16 @@ public class EnemyWalk : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void ApplySlow(float factor)
+    {
+        speed = baseSpeed * factor;
+    }
+
+    public void RemoveSlow()
+    {
+        speed = baseSpeed;
+    }
+
+
+
 }

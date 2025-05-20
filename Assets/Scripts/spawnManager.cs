@@ -5,10 +5,13 @@ using System.Collections.Generic;
 [System.Serializable]
 public class EnemyWave
 {
-    public GameObject[] enemyTypes; // diferentes prefabs de enemigos
-    public int totalEnemies = 10;   // enemigos a spawnear en esta horda
-    public float spawnDelay = 1f;   // tiempo entre enemigos
-    public float startDelay = 0f;   // tiempo antes de que empiece la horda
+    public GameObject[] enemyTypes;  // diferentes prefabs de enemigos
+    public int totalEnemies = 10;    // enemigos a spawnear en esta horda
+    public float spawnDelay = 1f;    // tiempo entre enemigos
+    public float startDelay = 0f;    // tiempo antes de que empiece la horda
+
+    public Transform spawnPoint;     // punto desde el que se instancian
+    public Transform[] waypoints;    // 0 = izquierda, 1 = derecha
 }
 
 public class spawnManager : MonoBehaviour
@@ -16,6 +19,7 @@ public class spawnManager : MonoBehaviour
     public List<EnemyWave> waves; // lista de hordas
     public Transform waypointsLeft;
     public Transform waypointsRight;
+    public Transform waypointsCentre;
     private bool randomSpawnCounter = true;
 
     void Start()
@@ -48,20 +52,49 @@ public class spawnManager : MonoBehaviour
             int randIndex = Random.Range(0, wave.enemyTypes.Length);
             GameObject enemyToSpawn = wave.enemyTypes[randIndex];
 
-            GameObject newEnemy = Instantiate(enemyToSpawn, transform.position, Quaternion.identity);
+            Transform spawnPos = wave.spawnPoint != null ? wave.spawnPoint : transform;
+
+            GameObject newEnemy = Instantiate(enemyToSpawn, spawnPos.position, Quaternion.identity);
             EnemyWalk movement = newEnemy.GetComponent<EnemyWalk>();
 
-            if (randomSpawnCounter)
+            if (wave.spawnPoint != null && wave.spawnPoint.CompareTag("FirstSpawn"))
             {
-                movement.SetWaypoints(waypointsLeft);
+                if (randomSpawnCounter)
+                {
+                    if (waypointsLeft != null)
+                        movement.SetWaypoints(waypointsLeft);
+                    else
+                        Debug.LogWarning("waypointsLeft no está asignado en el inspector.");
+                }
+                else
+                {
+                    if (waypointsRight != null)
+                        movement.SetWaypoints(waypointsRight);
+                    else
+                        Debug.LogWarning("waypointsRight no está asignado en el inspector.");
+                }
+
+                randomSpawnCounter = !randomSpawnCounter;
+            }
+            else if (wave.spawnPoint != null && wave.spawnPoint.CompareTag("SecondSpawn"))
+            {
+                if (waypointsCentre != null)
+                {
+                    movement.SetWaypoints(waypointsCentre);
+                }
+                else
+                {
+                    Debug.LogWarning("waypointsCentre no está asignado en el inspector.");
+                }
             }
             else
             {
-                movement.SetWaypoints(waypointsRight);
+                Debug.LogWarning("spawnPoint sin etiqueta válida (debe ser 'FirstSpawn' o 'SecondSpawn').");
             }
 
-            randomSpawnCounter = !randomSpawnCounter;
             yield return new WaitForSeconds(wave.spawnDelay);
         }
     }
+
+
 }

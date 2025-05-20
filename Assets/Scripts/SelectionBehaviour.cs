@@ -29,7 +29,7 @@ public class SelectionBehaviour : MonoBehaviour
         {
             GameObject clicked = hit.transform.gameObject;
 
-            if (clicked != selected)
+            if (clicked != selected && clicked.name != "map")
             {
                 selected = clicked;
                 GetComponent<Renderer>().enabled = true;

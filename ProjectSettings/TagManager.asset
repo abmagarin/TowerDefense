@@ -11,6 +11,8 @@ TagManager:
   - CannonBall
   - finish
   - Windmill
+  - FirstSpawn
+  - SecondSpawn
   layers:
   - Default
   - TransparentFX
